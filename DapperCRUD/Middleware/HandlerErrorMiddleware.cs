@@ -37,7 +37,7 @@ namespace DapperCRUD.Middleware
 
         private async static Task HandlerExceptionAsync(HttpContext context, Exception ex, ILogger<HandlerErrorMiddleware> logger)
         {
-            object error = null;
+            object? error = null;
 
             switch (ex)
             {

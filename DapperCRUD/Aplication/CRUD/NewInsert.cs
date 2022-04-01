@@ -2,8 +2,6 @@
 using FluentValidation;
 using MediatR;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DapperCRUD.Aplication.CRUD
 {
@@ -11,12 +9,12 @@ namespace DapperCRUD.Aplication.CRUD
     {
         public class ExecuteRequestAdd : IRequest
         {
-            public string Firstname { get; set; }
-            public string Lastname { get; set; }
-            public string Subjects { get; set; }
+            public string Firstname { get; set; } = string.Empty;
+            public string Lastname { get; set; } = string.Empty;
+            public string Subjects { get; set; } = string.Empty;
             public int Age { get; set; }
-            public string Phone { get; set; }
-            public string Marks { get; set; }
+            public string Phone { get; set; } = string.Empty;
+            public string Marks { get; set; } = string.Empty;
         }
         public class ExecuteValidator : AbstractValidator<ExecuteRequestAdd>
         {
@@ -30,7 +28,6 @@ namespace DapperCRUD.Aplication.CRUD
                 RuleFor(x => x.Marks).NotEmpty().NotNull();
             }
         }
-
         public class Handler : IRequestHandler<ExecuteRequestAdd>
         {
             private readonly IStudents students;
@@ -38,7 +35,6 @@ namespace DapperCRUD.Aplication.CRUD
             {
                 this.students = students;
             }
-
             public async Task<Unit> Handle(ExecuteRequestAdd request, CancellationToken cancellationToken)
             {
                 var reusult = await students.NewStudent(request.Firstname, request.Lastname, request.Subjects, request.Age, request.Phone, request.Marks);
@@ -46,7 +42,6 @@ namespace DapperCRUD.Aplication.CRUD
                 {
                     return Unit.Value;
                 }
-
                 throw new HandlerException(HttpStatusCode.BadRequest,
                     new { message = "Error: Failed Insert new student" });
             }

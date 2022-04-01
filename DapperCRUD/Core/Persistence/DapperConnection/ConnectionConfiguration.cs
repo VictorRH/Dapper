@@ -2,7 +2,7 @@
 {
     public class ConnectionConfiguration
     {
-        public string ConnectionDB { get; set; }
+        public string? ConnectionDB { get; set; }
 
     }
 }

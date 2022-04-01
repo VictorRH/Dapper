@@ -2,8 +2,6 @@
 using FluentValidation;
 using MediatR;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DapperCRUD.Aplication.CRUD
 {
@@ -12,13 +10,12 @@ namespace DapperCRUD.Aplication.CRUD
         public class ExecuteUpdate : IRequest
         {
             public int IdStudent { get; set; }
-            public string Firstname { get; set; }
-            public string Lastname { get; set; }
-            public string Subjects { get; set; }
+            public string Firstname { get; set; } = string.Empty;
+            public string Lastname { get; set; } = string.Empty;
+            public string Subjects { get; set; } = string.Empty;
             public int Age { get; set; }
-            public string Phone { get; set; }
-            public string Marks { get; set; }
-
+            public string Phone { get; set; } = string.Empty;
+            public string Marks { get; set; } = string.Empty;
         }
         public class ExecuteValidator : AbstractValidator<ExecuteUpdate>
         {
@@ -36,21 +33,17 @@ namespace DapperCRUD.Aplication.CRUD
         public class Handler : IRequestHandler<ExecuteUpdate>
         {
             private readonly IStudents students;
-
             public Handler(IStudents students)
             {
                 this.students = students;
             }
-
             public async Task<Unit> Handle(ExecuteUpdate request, CancellationToken cancellationToken)
             {
-
                 var resultUpdate = await students.UpdateStudent(request.IdStudent, request.Firstname, request.Lastname, request.Subjects, request.Age, request.Phone, request.Marks);
                 if (resultUpdate > 0)
                 {
                     return Unit.Value;
                 }
-
                 throw new HandlerException(HttpStatusCode.BadRequest, new { message = "Error: student not found" });
             }
         }
